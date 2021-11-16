@@ -9,8 +9,6 @@
 // This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
 // OF ANY KIND, either express or implied. See the License for the specific
 // language governing permissions and limitations under the License.
-//snippet-start:[cdk.typescript.widgets]
-//snippet-start:[cdk.typescript.widgets.imports]
 const AWS = require('aws-sdk');
 
 const bucketName = process.env.BUCKET;
@@ -18,22 +16,32 @@ const bucketName = process.env.BUCKET;
 //snippet-start:[cdk.typescript.widgets.exports_main]
 exports.main = async function(event, context) {
   try {
-    var method = event.httpMethod;
+    const method = event.httpMethod;
     // Get name, if present
-    var widgetName = event.path.startsWith('/') ? event.path.substring(1) : event.path;
+    if (method === "POST") {
 
-    if (method === "GET") {
-      // GET / to get the names of all widgets
+// TODO
+// get the data
+//create cognito object
+//call cognito with the correct path
+//rename stuff
+//set up cognito app with correct perms
+//- no client secret
+//- only password path
+
       if (event.path === "/") {
-        const data = "addddbc"
-        var body = {
-          widgets: data
-        };
-        return {
-          statusCode: 200,
-          headers: {},
-          body: JSON.stringify(body)
-        };
+        const incomingBody = JSON.parse(event.body)
+        if (incomingBody.loginId && incomingBody.password) {
+          const data = "POSTadddd333ddbc" + incomingBody.loginId
+          var body = {
+            user : data
+          };
+          return {
+            statusCode: 200,
+            headers: {},
+            body: JSON.stringify(body)
+          };
+        }
       }
     }
 

@@ -20,7 +20,7 @@ public class MyWidgetServiceTest {
   @Before
   public void setUp() throws IOException {
     App app = new App();
-    Stack stack = new MyWidgetServiceStack(app, "MyWidgetServiceStack");
+    Stack stack = new CognitoMigrationStack(app, "MyWidgetServiceStack");
     actualStack = toCloudFormationJson(stack).path("Resources");
     expectedStack =
         TestUtils.fromFileResource(getClass().getResource("testMyWidgetServiceExpected.json"))

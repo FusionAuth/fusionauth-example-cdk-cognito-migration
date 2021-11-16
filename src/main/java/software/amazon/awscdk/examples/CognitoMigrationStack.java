@@ -19,11 +19,11 @@ import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.s3.Bucket;
 
-public class MyWidgetServiceStack extends Stack {
-  public MyWidgetServiceStack(final Construct scope, final String id) {
+public class CognitoMigrationStack extends Stack {
+  public CognitoMigrationStack(final Construct scope, final String id) {
     super(scope, id, null);
 
-    Bucket bucket = Bucket.Builder.create(this, "WidgetStorexaaa2").build();
+//    Bucket bucket = Bucket.Builder.create(this, "WidgetStorexaaa2").build();
 
     RestApi api =
         RestApi.Builder.create(this, "widgets-api")
@@ -42,18 +42,19 @@ public class MyWidgetServiceStack extends Stack {
             .build();
 
     Map<String, String> environmentVariables = new HashMap<String, String>();
-    environmentVariables.put("BUCKET", bucket.getBucketName());
+//    environmentVariables.put("BUCKET", bucket.getBucketName());
+    environmentVariables.put("poolid", "poolid");
 
     Function lambdaFunction =
         Function.Builder.create(this, "WidgetHandler")
             .code(Code.fromAsset("resources"))
             .handler("widgets.main")
-            .timeout(Duration.seconds(300))
+            .timeout(Duration.seconds(30))
             .runtime(Runtime.NODEJS_14_X)
             .environment(environmentVariables)
             .build();
 
-    bucket.grantReadWrite(lambdaFunction);
+//    bucket.grantReadWrite(lambdaFunction);
 
     Map<String, String> lambdaIntegrationMap = new HashMap<String, String>();
     lambdaIntegrationMap.put("application/json", "{ \"statusCode\": \"200\" }");
@@ -63,15 +64,17 @@ public class MyWidgetServiceStack extends Stack {
             .requestTemplates(lambdaIntegrationMap)
             .build();
 
-    api.getRoot().addMethod("GET", getWidgetIntegration);
-
+//    api.getRoot().addMethod("GET", getWidgetIntegration);
+    
     LambdaIntegration postWidgetIntegration = new LambdaIntegration(lambdaFunction);
-    LambdaIntegration deleteWidgetIntegration = new LambdaIntegration(lambdaFunction);
+    
+    api.getRoot().addMethod("POST", postWidgetIntegration);
+//    LambdaIntegration deleteWidgetIntegration = new LambdaIntegration(lambdaFunction);
 
-    Resource widget = api.getRoot().addResource("{id}");
-
-    widget.addMethod("POST", postWidgetIntegration);
-    widget.addMethod("GET", getWidgetIntegration);
-    widget.addMethod("DELETE", deleteWidgetIntegration);
+//    Resource widget = api.getRoot().addResource("{id}");
+//
+//    widget.addMethod("POST", postWidgetIntegration);
+//    widget.addMethod("GET", getWidgetIntegration);
+//    widget.addMethod("DELETE", deleteWidgetIntegration);
   }
 }
