@@ -33,7 +33,7 @@ public class CognitoMigrationStack extends Stack {
 
     List<IManagedPolicy> managedPolicyArray = new ArrayList<IManagedPolicy>();
     managedPolicyArray.add(
-        (IManagedPolicy) ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess"));
+        (IManagedPolicy) ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")); // TODO needs to be more constrained
 
     Role restApiRole =
         Role.Builder.create(this, "RestAPIRole")
@@ -43,7 +43,7 @@ public class CognitoMigrationStack extends Stack {
 
     Map<String, String> environmentVariables = new HashMap<String, String>();
 //    environmentVariables.put("BUCKET", bucket.getBucketName());
-    environmentVariables.put("poolid", "poolid");
+    environmentVariables.put("COGNITO_CLIENT_ID", "1r4gcuhj4f127iuhoiov9234tm");
 
     Function lambdaFunction =
         Function.Builder.create(this, "WidgetHandler")

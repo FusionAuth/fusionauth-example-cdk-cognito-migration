@@ -13,15 +13,18 @@ const AWS = require('aws-sdk');
 
 const bucketName = process.env.BUCKET;
 
+function processUserJSON(json) {
+  json.testValue = "foo"
+  return json
+}
+
 //snippet-start:[cdk.typescript.widgets.exports_main]
 exports.main = async function(event, context) {
   try {
     const method = event.httpMethod;
     // Get name, if present
     if (method === "POST") {
-
 // TODO
-// get the data
 //create cognito object
 //call cognito with the correct path
 //rename stuff
@@ -32,24 +35,38 @@ exports.main = async function(event, context) {
       if (event.path === "/") {
         const incomingBody = JSON.parse(event.body)
         if (incomingBody.loginId && incomingBody.password) {
-          const data = "POSTadddd333ddbc" + incomingBody.loginId
-          var body = {
-            user : data
-          };
-          return {
+         //https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#initiateAuth-property
+          const cognito = new AWS.CognitoIdentityServiceProvider({region: "us-east-2"}); // TODO pull from environment
+          var params = {
+            AuthFlow: 'USER_PASSWORD_AUTH',
+            ClientId: '1r4gcuhj4f127iuhoiov9234tm', // TODO pull from envt
+            AuthParameters: {
+              USERNAME: incomingBody.loginId, // TODO email? 
+              PASSWORD: incomingBody.password
+            }
+         };
+
+    	const res = await cognito.initiateAuth(params).promise()
+        var jsonResponse = {}
+        if (res.AuthenticationResult && res.AuthenticationResult.AccessToken) {
+    	   const res2 = await cognito.getUser({AccessToken:res.AuthenticationResult.AccessToken}).promise();
+           jsonResponse = processUserJSON(res2)
+        }
+        return {
             statusCode: 200,
             headers: {},
-            body: JSON.stringify(body)
-          };
-        }
-      }
-    }
+            body: JSON.stringify(jsonResponse)
+        };
+     }
+     }
+     }
 
-    // We got something besides a GET
+// TODO check header for security value auth
+
     return {
       statusCode: 400,
       headers: {},
-      body: "We only accept GET, POST, and DELETE, not " + method
+      body: "Invalid request"
     };
   } catch(error) {
     var body = error.stack || JSON.stringify(error, null, 2);
@@ -60,5 +77,4 @@ exports.main = async function(event, context) {
     }
   }
 }
-//snippet-end:[cdk.typescript.widgets.exports_main]
-//snippet-end:[cdk.typescript.widgets]
+
