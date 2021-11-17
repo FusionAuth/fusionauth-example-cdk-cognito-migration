@@ -31,19 +31,21 @@ public class CognitoMigrationStack extends Stack {
             .description("This service serves widgets.")
             .build();
 
-    List<IManagedPolicy> managedPolicyArray = new ArrayList<IManagedPolicy>();
-    managedPolicyArray.add(
-        (IManagedPolicy) ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")); // TODO needs to be more constrained
+//    List<IManagedPolicy> managedPolicyArray = new ArrayList<IManagedPolicy>();
+//    managedPolicyArray.add(
+//        (IManagedPolicy) ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")); // TODO needs to be more constrained
 
     Role restApiRole =
         Role.Builder.create(this, "RestAPIRole")
             .assumedBy(new ServicePrincipal("apigateway.amazonaws.com"))
-            .managedPolicies(managedPolicyArray)
+//            .managedPolicies(managedPolicyArray)
             .build();
 
     Map<String, String> environmentVariables = new HashMap<String, String>();
-//    environmentVariables.put("BUCKET", bucket.getBucketName());
-    environmentVariables.put("COGNITO_CLIENT_ID", "1r4gcuhj4f127iuhoiov9234tm");
+    environmentVariables.put("CLIENT_ID", "1r4gcuhj4f127iuhoiov9234tm");
+    environmentVariables.put("REGION", "us-east-2");
+    environmentVariables.put("FUSIONAUTH_TENANT_ID", "c5e99266-cb54-4021-abaa-42ed7b8650c4");
+
 
     Function lambdaFunction =
         Function.Builder.create(this, "WidgetHandler")
