@@ -1,6 +1,6 @@
-# My Widget Service
+# My Connector Service
 
-This example uses lambda to serve-up widgets.
+This example uses lambda to authenticate users against Cognito. It returns the values in a format expected by a FusionAuth Connector.
 
 ## Building
 
