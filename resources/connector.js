@@ -90,7 +90,7 @@ exports.main = async function(event, context) {
             return {
                 statusCode: 401,
                 headers: {},
-                body: "Unauthorized, saw " + JSON.stringify(headers) + ", expected: " + authorizationHeaderValue
+                body: ""
             };
         }
 

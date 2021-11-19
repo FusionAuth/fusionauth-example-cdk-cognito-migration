@@ -1,23 +1,17 @@
-package software.amazon.awscdk.examples;
+package io.fusionauth.aws.cdk.connector;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.services.apigateway.LambdaIntegration;
-import software.amazon.awscdk.services.apigateway.Resource;
 import software.amazon.awscdk.services.apigateway.RestApi;
-import software.amazon.awscdk.services.iam.IManagedPolicy;
-import software.amazon.awscdk.services.iam.ManagedPolicy;
-import software.amazon.awscdk.services.iam.Role;
-import software.amazon.awscdk.services.iam.ServicePrincipal;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.s3.Bucket;
+
 
 public class CognitoMigrationStack extends Stack {
   public CognitoMigrationStack(final Construct scope, final String id) {

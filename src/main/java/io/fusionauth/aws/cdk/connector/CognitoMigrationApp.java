@@ -1,4 +1,4 @@
-package software.amazon.awscdk.examples;
+package io.fusionauth.aws.cdk.connector;
 
 import software.amazon.awscdk.core.App;
 
