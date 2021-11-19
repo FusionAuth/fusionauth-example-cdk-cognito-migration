@@ -26,7 +26,7 @@ public class CognitoMigrationStack extends Stack {
     Function lambdaFunction =
         Function.Builder.create(this, "ConnectorHandler")
             .code(Code.fromAsset("resources"))
-            .handler("connector.main")
+            .handler("index.handler")
             .timeout(Duration.seconds(10))
             .runtime(Runtime.NODEJS_14_X)
             .build();

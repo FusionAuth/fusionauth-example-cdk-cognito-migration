@@ -79,7 +79,7 @@ function processUserJSON(json) {
     return userJSON
 }
 
-exports.main = async function(event, context) {
+exports.handler = async function(event, context) {
     try {
         const headers = event.headers
         if (headers["Authorization"] !== authorizationHeaderValue) {
