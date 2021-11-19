@@ -44,8 +44,8 @@ public class CognitoMigrationStack extends Stack {
             .environment(environmentVariables)
             .build();
     
-    LambdaIntegration postWidgetIntegration = new LambdaIntegration(lambdaFunction);
+    LambdaIntegration postIntegration = new LambdaIntegration(lambdaFunction);
     
-    api.getRoot().addMethod("POST", postWidgetIntegration);
+    api.getRoot().addMethod("POST", postIntegration);
   }
 }
