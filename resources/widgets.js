@@ -15,6 +15,7 @@ const clientId = process.env.CLIENT_ID;
 const region = process.env.REGION;
 const fusionAuthTenantId = process.env.FUSIONAUTH_TENANT_ID;
 const authorizationHeaderValue = process.env.AUTHORIZATION_HEADER_VALUE;
+const cognito = new AWS.CognitoIdentityServiceProvider(region);
 
 function processOneAttribute(attributes, name) {
     console.log("processing: " + name)
@@ -74,16 +75,14 @@ function processUserJSON(json) {
     }
     userJSON.user.tenantId = fusionAuthTenantId
 
-)
-const emailVerified = processOneAttribute(attributes, "email_verified")
-if (emailVerified != null) {
-    userJSON.user.verified = (emailVerified == "true")
+    const emailVerified = processOneAttribute(attributes, "email_verified")
+    if (emailVerified != null) {
+        userJSON.user.verified = (emailVerified == "true")
+    }
+
+    return userJSON
 }
 
-return userJSON
-}
-
-//snippet-start:[cdk.typescript.widgets.exports_main]
 exports.main = async function(event, context) {
     try {
         const headers = event.headers
@@ -102,13 +101,14 @@ exports.main = async function(event, context) {
             if (event.path === "/") {
                 const incomingBody = JSON.parse(event.body)
                 if (incomingBody.loginId && incomingBody.password) {
+                
                     //https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#initiateAuth-property
-                    const cognito = new AWS.CognitoIdentityServiceProvider(region); // TODO pull from environment
+                                    
                     var params = {
                         AuthFlow: 'USER_PASSWORD_AUTH',
-                        ClientId: clientId, // TODO pull from envt
+                        ClientId: clientId,
                         AuthParameters: {
-                            USERNAME: incomingBody.loginId, // TODO email? 
+                            USERNAME: incomingBody.loginId,
                             PASSWORD: incomingBody.password
                         }
                     };
