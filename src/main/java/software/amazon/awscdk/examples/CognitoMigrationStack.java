@@ -23,17 +23,11 @@ public class CognitoMigrationStack extends Stack {
   public CognitoMigrationStack(final Construct scope, final String id) {
     super(scope, id, null);
 
-//    Bucket bucket = Bucket.Builder.create(this, "WidgetStorexaaa2").build();
-
     RestApi api =
         RestApi.Builder.create(this, "widgets-api")
             .restApiName("Widget Service")
             .description("This service serves widgets.")
             .build();
-
-//    List<IManagedPolicy> managedPolicyArray = new ArrayList<IManagedPolicy>();
-//    managedPolicyArray.add(
-//        (IManagedPolicy) ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoPowerUser")); // TODO needs to be more constrained
 
     Role restApiRole =
         Role.Builder.create(this, "RestAPIRole")
@@ -44,7 +38,8 @@ public class CognitoMigrationStack extends Stack {
     Map<String, String> environmentVariables = new HashMap<String, String>();
     environmentVariables.put("CLIENT_ID", "1r4gcuhj4f127iuhoiov9234tm");
     environmentVariables.put("REGION", "us-east-2");
-    environmentVariables.put("FUSIONAUTH_TENANT_ID", "c5e99266-cb54-4021-abaa-42ed7b8650c4");
+    environmentVariables.put("FUSIONAUTH_TENANT_ID", "30663132-6464-6665-3032-326466613934");
+    environmentVariables.put("AUTHORIZATION_HEADER_VALUE", "2687EE95-AF19-4CE6-A8BD-963139DED32E"); // make this a random value
 
 
     Function lambdaFunction =

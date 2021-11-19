@@ -14,6 +14,7 @@ const AWS = require('aws-sdk');
 const clientId = process.env.CLIENT_ID;
 const region = process.env.REGION;
 const fusionAuthTenantId = process.env.FUSIONAUTH_TENANT_ID;
+const authorizationHeaderValue = process.env.AUTHORIZATION_HEADER_VALUE;
 
 function processOneAttribute(attributes, name) {
   console.log("processing: "+name)
@@ -69,7 +70,7 @@ function processUserJSON(json) {
     userJSON.user.lastName = lastName
   }
   userJSON.user.registrations = []
-  userJSON.user.registrations[0] = { applicationId: "955cded7-d296-4603-8634-146b92d4bbdb" }
+  userJSON.user.registrations[0] = { applicationId: "85a03867-dccf-4882-adde-1a79aeec50df" }
   userJSON.user.tenantId = fusionAuthTenantId 
 
   console.log("abc")
@@ -87,6 +88,15 @@ function processUserJSON(json) {
 //snippet-start:[cdk.typescript.widgets.exports_main]
 exports.main = async function(event, context) {
   try {
+    const headers = event.headers
+    if (headers["Authorization"] !== authorizationHeaderValue) {
+      return {
+      statusCode: 401,
+      headers: {},
+      body: "Unauthorized, saw "+ JSON.stringify(headers) + ", expected: " +authorizationHeaderValue
+    };
+    }
+    
     const method = event.httpMethod;
     // Get name, if present
     if (method === "POST") {
