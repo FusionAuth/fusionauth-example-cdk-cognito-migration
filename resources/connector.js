@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 const clientId = "1r4gcuhj4f127iuhoiov9234tm"
 const region = "us-east-2"
 const fusionAuthTenantId = "30663132-6464-6665-3032-326466613934"
+const fusionAuthApplicationId = "85a03867-dccf-4882-adde-1a79aeec50df"
 const authorizationHeaderValue = "2687EE95-AF19-4CE6-A8BD-963139DED32E" // make this a random value
 
 const cognito = new AWS.CognitoIdentityServiceProvider(region);
@@ -18,7 +19,7 @@ function processOneAttribute(attributes, name) {
 function processUserJSON(json) {
     // map the json returned by cognito to FusionAuth compatible json
     // see https://fusionauth.io/docs/v1/tech/connectors/generic-connector/ for more
-    // example: {"Username":"06744664-df6e-48cc-9421-3d56a9732172","UserAttributes":[{"Name":"sub","Value":"06744664-df6e-48cc-9421-3d56a9732172"},{"Name":"website","Value":"http://example.com"},{"Name":"given_name","Value":"Test"},{"Name":"middle_name","Value":"T"},{"Name":"family_name","Value":"Testerson"},{"Name":"email","Value":"test@example.com"}],"testValue":"foo"}
+    // example Cognito JSON: {"Username":"06744664-df6e-48cc-9421-3d56a9732172","UserAttributes":[{"Name":"sub","Value":"06744664-df6e-48cc-9421-3d56a9732172"},{"Name":"website","Value":"http://example.com"},{"Name":"given_name","Value":"Test"},{"Name":"middle_name","Value":"T"},{"Name":"family_name","Value":"Testerson"},{"Name":"email","Value":"test@example.com"}],"testValue":"foo"}
     // console.log(json)
 
     const userJSON = {}
@@ -30,6 +31,7 @@ function processUserJSON(json) {
     userJSON.user.data.migratedDate = new Date()
     userJSON.user.data.migratedFrom = "cognito"
 
+    // map cognito attributes if present to FusionAuth attributes
     const attributes = json.UserAttributes
     const website = processOneAttribute(attributes, "website")
     if (website != null) {
@@ -49,8 +51,6 @@ function processUserJSON(json) {
         userJSON.user.id = sub
     }
 
-    userJSON.user.active = true
-
     const firstName = processOneAttribute(attributes, "given_name")
     if (firstName != null) {
         userJSON.user.firstName = firstName
@@ -59,15 +59,21 @@ function processUserJSON(json) {
     if (lastName != null) {
         userJSON.user.lastName = lastName
     }
-    userJSON.user.registrations = []
-    userJSON.user.registrations[0] = {
-        applicationId: "85a03867-dccf-4882-adde-1a79aeec50df"
-    }
-    userJSON.user.tenantId = fusionAuthTenantId
 
     const emailVerified = processOneAttribute(attributes, "email_verified")
     if (emailVerified != null) {
         userJSON.user.verified = (emailVerified == "true")
+    }
+
+    // default values
+
+    userJSON.user.active = true
+    userJSON.user.tenantId = fusionAuthTenantId
+
+    // register for certain FusionAuth applications
+    userJSON.user.registrations = []
+    userJSON.user.registrations[0] = {
+        applicationId: fusionAuthApplicationId 
     }
 
     return userJSON
