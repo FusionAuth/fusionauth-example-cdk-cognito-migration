@@ -23,19 +23,12 @@ public class CognitoMigrationStack extends Stack {
             .description("This service responds to login requests from a FusionAuth Connector")
             .build();
 
-    Map<String, String> environmentVariables = new HashMap<String, String>();
-    environmentVariables.put("CLIENT_ID", "1r4gcuhj4f127iuhoiov9234tm");
-    environmentVariables.put("REGION", "us-east-2");
-    environmentVariables.put("FUSIONAUTH_TENANT_ID", "30663132-6464-6665-3032-326466613934");
-    environmentVariables.put("AUTHORIZATION_HEADER_VALUE", "2687EE95-AF19-4CE6-A8BD-963139DED32E"); // make this a random value
-
     Function lambdaFunction =
         Function.Builder.create(this, "ConnectorHandler")
             .code(Code.fromAsset("resources"))
             .handler("connector.main")
             .timeout(Duration.seconds(10))
             .runtime(Runtime.NODEJS_14_X)
-            .environment(environmentVariables)
             .build();
     
     LambdaIntegration postIntegration = new LambdaIntegration(lambdaFunction);

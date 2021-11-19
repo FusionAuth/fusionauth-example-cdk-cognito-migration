@@ -11,10 +11,11 @@
 // language governing permissions and limitations under the License.
 const AWS = require('aws-sdk');
 
-const clientId = process.env.CLIENT_ID;
-const region = process.env.REGION;
-const fusionAuthTenantId = process.env.FUSIONAUTH_TENANT_ID;
-const authorizationHeaderValue = process.env.AUTHORIZATION_HEADER_VALUE;
+const clientId = "1r4gcuhj4f127iuhoiov9234tm"
+const region = "us-east-2"
+const fusionAuthTenantId = "30663132-6464-6665-3032-326466613934"
+const authorizationHeaderValue = "2687EE95-AF19-4CE6-A8BD-963139DED32E" // make this a random value
+
 const cognito = new AWS.CognitoIdentityServiceProvider(region);
 
 function processOneAttribute(attributes, name) {
