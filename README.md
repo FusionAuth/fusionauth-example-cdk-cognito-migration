@@ -1,6 +1,6 @@
-# My Connector Service
+# My FusionAuth Connector Service
 
-This example uses lambda to authenticate users against Cognito. It returns the values in a format expected by a FusionAuth Connector.
+This example uses a lambda to authenticate users against Cognito. It returns the values in a format expected by a FusionAuth Connector.
 
 ## Building
 
