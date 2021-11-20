@@ -79,6 +79,10 @@ function processUserJSON(json) {
     return userJSON
 }
 
+// ***********
+// you shouldn't need to modify anything below this
+// ***********
+
 exports.handler = async function(event, context) {
     try {
         const headers = event.headers
@@ -108,7 +112,6 @@ exports.handler = async function(event, context) {
                             PASSWORD: incomingBody.password
                         }
                     };
-
 
                     const res = await cognito.initiateAuth(params).promise()
                     var jsonResponse = {}
