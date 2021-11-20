@@ -2,7 +2,6 @@ const AWS = require('aws-sdk');
 
 const clientId = "1r4gcuhj4f127iuhoiov9234tm"
 const region = "us-east-2"
-const fusionAuthTenantId = "30663132-6464-6665-3032-326466613934"
 const fusionAuthApplicationId = "85a03867-dccf-4882-adde-1a79aeec50df"
 const authorizationHeaderValue = "2687EE95-AF19-4CE6-A8BD-963139DED32E" // make this a random value
 
@@ -68,7 +67,6 @@ function processUserJSON(json) {
     // default values
 
     userJSON.user.active = true
-    userJSON.user.tenantId = fusionAuthTenantId
 
     // register for certain FusionAuth applications
     userJSON.user.registrations = []
