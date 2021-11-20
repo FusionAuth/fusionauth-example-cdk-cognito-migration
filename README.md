@@ -30,3 +30,11 @@ to run the CDK toolkit commands as usual (Maven will recompile as needed):
 
     $ cdk diff
     <diff against deployed stack>
+
+## CloudFormation
+
+An equivalent CloudFormation template is available under the `cloudformation` directory.
+
+## More
+
+Learn more about migrating from Amazon Cognito to FusionAuth here: https://fusionauth.io/docs/v1/tech/migration-guide/cognito/
