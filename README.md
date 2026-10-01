@@ -1,5 +1,9 @@
 # My FusionAuth Connector Service
 
+> [!WARNING]
+> This repository is generated from content that lives at [github.com/FusionAuth/fusionauth-site](https://github.com/FusionAuth/fusionauth-site/tree/main/astro/extractedcode/example-cdk-cognito-migration). Changes to files here _will be overwritten by that automation_. File an issue or pull request with [fusionauth-site](https://github.com/FusionAuth/fusionauth-site) instead.
+
+
 This example uses a lambda to authenticate users against Cognito. It returns the values in a format expected by a FusionAuth Connector.
 
 ## Building
